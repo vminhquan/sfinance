@@ -59,26 +59,27 @@ class _AddEditScreenState extends State<AddEditScreen> {
   }
 
   void _saveForm() {
-    if (_formKey.currentState!.validate()) {
-      final newTxn = TransactionModel(
-        id: widget.transaction?.id,
-        title: _titleController.text.trim(),
-        amount: double.parse(_amountController.text.trim()),
-        date: DateFormat('dd/MM/yyyy').format(_selectedDate),
-        type: _selectedType,
-      );
+  if (_formKey.currentState!.validate()) {
+    final newTxn = TransactionModel(
+      id: widget.transaction?.id,
+      title: _titleController.text.trim(),
+      amount: double.parse(_amountController.text.trim()),
+      date: DateFormat('dd/MM/yyyy').format(_selectedDate),
+      type: _selectedType,
+    );
 
-      final provider = Provider.of<TransactionProvider>(context, listen: false);
+    final provider = Provider.of<TransactionProvider>(context, listen: false);
 
-      if (widget.transaction == null) {
-        provider.addTransaction(newTxn);
-      } else {
-        provider.updateTransaction(newTxn);
-      }
-
-      Navigator.of(context).pop();
+    if (widget.transaction == null) {
+      provider.addTransaction(newTxn);
+    } else {
+      provider.updateTransaction(newTxn);
     }
+
+    // Trả lại dữ liệu mới khi đóng form
+    Navigator.of(context).pop(newTxn); 
   }
+}
 
   @override
   Widget build(BuildContext context) {

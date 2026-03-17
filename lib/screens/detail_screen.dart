@@ -45,32 +45,41 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Lắng nghe dữ liệu mới nhất từ Provider
+    final currentTxn = context.watch<TransactionProvider>().transactions.firstWhere(
+      (t) => t.id == transaction.id,
+      orElse: () => transaction, // Dùng dữ liệu cũ dự phòng nếu lỡ bị xóa
+    );
+
     final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
-    final isIncome = transaction.type == 'Thu nhập';
+    
+    // 2. Kiểm tra màu sắc dựa trên dữ liệu mới (currentTxn)
+    final isIncome = currentTxn.type == 'Thu nhập';
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chi tiết giao dịch'),
         actions: [
-          // Nút Sửa 
           IconButton(
             icon: const Icon(Icons.edit, color: Colors.blue),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddEditScreen(transaction: transaction),
+                  // 3. Truyền dữ liệu mới nhất sang màn hình Sửa
+                  builder: (context) => AddEditScreen(transaction: currentTxn),
                 ),
               );
             },
           ),
-          // Nút Xóa
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () => _showDeleteDialog(context),
           ),
         ],
       ),
+      
+      // 4. HIỂN THỊ DỮ LIỆU MỚI 
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -91,7 +100,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    transaction.type,
+                    currentTxn.type, 
                     style: TextStyle(fontSize: 20, color: isIncome ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -103,17 +112,17 @@ class DetailScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.title),
               title: const Text('Tên giao dịch', style: TextStyle(color: Colors.grey)),
-              subtitle: Text(transaction.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              subtitle: Text(currentTxn.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), 
             ),
             ListTile(
               leading: const Icon(Icons.attach_money),
               title: const Text('Số tiền', style: TextStyle(color: Colors.grey)),
-              subtitle: Text(currencyFormat.format(transaction.amount), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              subtitle: Text(currencyFormat.format(currentTxn.amount), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), 
             ),
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: const Text('Ngày thực hiện', style: TextStyle(color: Colors.grey)),
-              subtitle: Text(transaction.date, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              subtitle: Text(currentTxn.date, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), 
             ),
           ],
         ),
