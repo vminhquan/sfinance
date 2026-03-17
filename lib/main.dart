@@ -5,7 +5,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'providers/transaction_provider.dart';
 import 'providers/theme_provider.dart';
-import 'screens/home_screen.dart';
+
+import 'providers/pin_provider.dart';
+import 'screens/pin_screen.dart';
 
 void main() async {
   // 1. Đảm bảo Flutter đã sẵn sàng kết nối với macOS trước khi gọi Database
@@ -23,6 +25,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => TransactionProvider()..loadTransactions()),
+        ChangeNotifierProvider(create: (_) => PinProvider()),
       ],
       child: const MyApp(),
     ),
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
       themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      home: const HomeScreen(),
+      home: const PinScreen(),
     );
   }
 }
