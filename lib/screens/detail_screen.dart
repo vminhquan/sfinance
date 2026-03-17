@@ -11,13 +11,13 @@ class DetailScreen extends StatelessWidget {
 
   const DetailScreen({super.key, required this.transaction});
 
-  // HÀM BẮT BUỘC: Hiển thị hộp thoại xác nhận trước khi xóa
+  // Hiển thị hộp thoại xác nhận trước khi xóa
   void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xóa', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: const Text('Bạn có chắc chắn muốn xóa không?'), // Đúng y nguyên câu lệnh yêu cầu của đề bài
+        content: const Text('Bạn có chắc chắn muốn xóa không?'), 
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(), // Đóng hộp thoại
@@ -31,7 +31,7 @@ class DetailScreen extends StatelessWidget {
               Navigator.of(ctx).pop(); // Đóng hộp thoại
               Navigator.of(context).pop(); // Quay về màn hình danh sách
               
-              // Hiện thông báo (SnackBar) báo xóa thành công
+              // Hiện thông báo báo xóa thành công
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Đã xóa giao dịch thành công!')),
               );
@@ -52,7 +52,7 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Chi tiết giao dịch'),
         actions: [
-          // Nút Sửa (Điều hướng sang AddEditScreen với dữ liệu có sẵn)
+          // Nút Sửa 
           IconButton(
             icon: const Icon(Icons.edit, color: Colors.blue),
             onPressed: () {
